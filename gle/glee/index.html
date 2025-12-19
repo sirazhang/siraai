@@ -168,46 +168,59 @@
         </section>
 
         <section id="view-notebook" class="view">
-          <div class="notebook-header">
-            <button class="back-button" type="button" data-view="home">
-              ← 返回主页
-            </button>
-            <h2 class="section-title">笔记本</h2>
-          </div>
-          <div class="panel notebook-panel">
-            <div class="notebook-topic-row">
-              <span class="notebook-label">当前素材：</span>
-              <span class="notebook-topic" id="notebook-topic">IELTS</span>
+          <div class="notebook-container">
+            <!-- Header with navigation -->
+            <div class="notebook-nav">
+              <button class="nav-icon-btn" data-view="home" type="button">
+                <img src="public/home.png" alt="主页" class="nav-icon" />
+              </button>
+              <button class="nav-icon-btn" data-view="profile" type="button">
+                <img src="public/user.png" alt="个人中心" class="nav-icon" />
+              </button>
             </div>
-            <div class="notebook-body">
-              <div class="audio-section">
-                <h3 class="subsection-title">音频播放</h3>
-                <div class="audio-player" id="audio-player">
-                  <audio id="audio-element" controls class="audio-controls">
-                    <source src="" type="audio/mpeg">
-                    您的浏览器不支持音频播放。
-                  </audio>
-                  <div class="audio-info">
-                    <div class="audio-title" id="audio-title">请选择音频素材</div>
-                    <div class="audio-duration" id="audio-duration">--:--</div>
+
+            <!-- 3-column layout -->
+            <div class="notebook-grid">
+              <!-- Left column: 1/3 -->
+              <div class="notebook-left">
+                <div class="blog-image-container">
+                  <img src="public/ieltscover.png" alt="博客图" class="blog-image" id="blog-image" />
+                  <div class="audio-controls-overlay">
+                    <button class="control-btn" id="prev-btn" type="button">
+                      <img src="public/back.png" alt="后退" class="control-icon" />
+                    </button>
+                    <button class="control-btn" id="play-pause-btn" type="button">
+                      <img src="public/play.png" alt="播放" class="control-icon" id="play-pause-icon" />
+                    </button>
+                    <button class="control-btn" id="next-btn" type="button">
+                      <img src="public/forward.png" alt="前进" class="control-icon" />
+                    </button>
                   </div>
                 </div>
+                <div class="blog-text" id="blog-text">
+                  点击播放按钮开始收听博客内容...
+                </div>
+                <audio id="audio-element" style="display: none;">
+                  <source src="" type="audio/mpeg">
+                </audio>
               </div>
-              <div class="worksheet-section">
-                <h3 class="subsection-title">练习纸</h3>
-                <div class="worksheet-container" id="worksheet-container">
-                  <button class="generate-btn" id="generate-worksheet" type="button">
-                    生成练习纸
+
+              <!-- Middle column: 5/12 -->
+              <div class="notebook-middle">
+                <h3 class="section-subtitle">笔记</h3>
+                <div class="notes-area" contenteditable="true" placeholder="在此记录你的笔记...">
+                </div>
+              </div>
+
+              <!-- Right column: 1/4 -->
+              <div class="notebook-right">
+                <h3 class="section-subtitle">练习</h3>
+                <div class="practice-area">
+                  <button class="generate-practice-btn" id="generate-practice" type="button">
+                    生成练习题
                   </button>
-                  <div class="worksheet-content" id="worksheet-content" style="display: none;">
-                    <div class="worksheet-header">
-                      <div class="worksheet-topic" id="worksheet-topic">IELTS</div>
-                      <div class="worksheet-date" id="worksheet-date"></div>
-                    </div>
-                    <div class="worksheet-questions" id="worksheet-questions"></div>
-                    <button class="download-btn" id="download-worksheet" type="button">
-                      下载练习纸
-                    </button>
+                  <div class="practice-content" id="practice-content" style="display: none;">
+                    <div class="practice-questions" id="practice-questions"></div>
                   </div>
                 </div>
               </div>
