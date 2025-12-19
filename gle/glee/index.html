@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AIPod 博客</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <div class="header-left">
+          <img src="public/logo.png" alt="AIPod Logo" class="logo" />
+          <span class="brand-name">AIPod</span>
+        </div>
+        <button class="header-right" data-view="profile" type="button">
+          <img src="public/user.png" alt="个人中心" class="user-icon" />
+          <span class="header-right-label">个人中心</span>
+        </button>
+      </header>
+
+      <main class="main">
+        <section id="view-home" class="view view-active">
+          <section class="section section-library">
+            <div class="section-header">
+              <h2 class="section-title">博客素材库</h2>
+            </div>
+            <div class="card-grid">
+              <article class="media-card" data-topic="ielts">
+                <div class="media-thumb-wrapper">
+                  <img
+                    src="public/ieltscover.png"
+                    alt="IELTS 素材封面"
+                    class="media-thumb"
+                  />
+                  <button
+                    class="play-button"
+                    type="button"
+                    aria-label="播放 IELTS 素材"
+                    data-topic="ielts"
+                  >
+                    ▶
+                  </button>
+                </div>
+                <div class="media-meta">
+                  <h3 class="media-title">IELTS</h3>
+                </div>
+              </article>
+
+              <article class="media-card" data-topic="christmas">
+                <div class="media-thumb-wrapper">
+                  <img
+                    src="public/christmascover.png"
+                    alt="Christmas 素材封面"
+                    class="media-thumb"
+                  />
+                  <button
+                    class="play-button"
+                    type="button"
+                    aria-label="播放 Christmas 素材"
+                    data-topic="christmas"
+                  >
+                    ▶
+                  </button>
+                </div>
+                <div class="media-meta">
+                  <h3 class="media-title">Christmas</h3>
+                </div>
+              </article>
+
+              <article class="media-card" data-topic="halloween">
+                <div class="media-thumb-wrapper">
+                  <img
+                    src="public/halloweencover.png"
+                    alt="Halloween 素材封面"
+                    class="media-thumb"
+                  />
+                  <button
+                    class="play-button"
+                    type="button"
+                    aria-label="播放 Halloween 素材"
+                    data-topic="halloween"
+                  >
+                    ▶
+                  </button>
+                </div>
+                <div class="media-meta">
+                  <h3 class="media-title">Halloween</h3>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="section section-community">
+            <h2 class="section-title">精选社区</h2>
+            <div class="community-card">
+              <img
+                src="public/community1.png"
+                alt="社区精选练习纸示例"
+                class="community-image"
+              />
+              <div class="community-footer">
+                <div class="community-user">@一只学习的猫</div>
+                <div class="community-actions">
+                  <button class="icon-button" type="button" data-action="favorite">
+                    收藏
+                  </button>
+                  <button class="icon-button" type="button" data-action="comment">
+                    评论
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section id="view-profile" class="view">
+          <h2 class="section-title">个人中心</h2>
+          <div class="panel profile-panel">
+            <div class="profile-section">
+              <h3 class="profile-subtitle">用户信息</h3>
+              <div class="profile-info">
+                <div class="profile-avatar">
+                  <img src="public/user.png" alt="用户头像" class="avatar-img" />
+                </div>
+                <div class="profile-details">
+                  <div class="profile-name">学习者</div>
+                  <div class="profile-email">learner@example.com</div>
+                  <div class="profile-joined">加入时间: 2024-12</div>
+                </div>
+              </div>
+            </div>
+            <div class="profile-section">
+              <h3 class="profile-subtitle">学习统计</h3>
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <div class="stat-value">12</div>
+                  <div class="stat-label">完成练习</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">3</div>
+                  <div class="stat-label">收藏内容</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">45</div>
+                  <div class="stat-label">学习时长(分钟)</div>
+                </div>
+              </div>
+            </div>
+            <div class="profile-section">
+              <h3 class="profile-subtitle">最近练习</h3>
+              <div class="recent-list">
+                <div class="recent-item">
+                  <span class="recent-topic">IELTS</span>
+                  <span class="recent-date">2天前</span>
+                </div>
+                <div class="recent-item">
+                  <span class="recent-topic">Christmas</span>
+                  <span class="recent-date">5天前</span>
+                </div>
+                <div class="recent-item">
+                  <span class="recent-topic">Halloween</span>
+                  <span class="recent-date">1周前</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-notebook" class="view">
+          <div class="notebook-header">
+            <button class="back-button" type="button" data-view="home">
+              ← 返回主页
+            </button>
+            <h2 class="section-title">笔记本</h2>
+          </div>
+          <div class="panel notebook-panel">
+            <div class="notebook-topic-row">
+              <span class="notebook-label">当前素材：</span>
+              <span class="notebook-topic" id="notebook-topic">IELTS</span>
+            </div>
+            <div class="notebook-body">
+              <div class="audio-section">
+                <h3 class="subsection-title">音频播放</h3>
+                <div class="audio-player" id="audio-player">
+                  <audio id="audio-element" controls class="audio-controls">
+                    <source src="" type="audio/mpeg">
+                    您的浏览器不支持音频播放。
+                  </audio>
+                  <div class="audio-info">
+                    <div class="audio-title" id="audio-title">请选择音频素材</div>
+                    <div class="audio-duration" id="audio-duration">--:--</div>
+                  </div>
+                </div>
+              </div>
+              <div class="worksheet-section">
+                <h3 class="subsection-title">练习纸</h3>
+                <div class="worksheet-container" id="worksheet-container">
+                  <button class="generate-btn" id="generate-worksheet" type="button">
+                    生成练习纸
+                  </button>
+                  <div class="worksheet-content" id="worksheet-content" style="display: none;">
+                    <div class="worksheet-header">
+                      <div class="worksheet-topic" id="worksheet-topic">IELTS</div>
+                      <div class="worksheet-date" id="worksheet-date"></div>
+                    </div>
+                    <div class="worksheet-questions" id="worksheet-questions"></div>
+                    <button class="download-btn" id="download-worksheet" type="button">
+                      下载练习纸
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
