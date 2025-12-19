@@ -123,64 +123,83 @@ body {
 }
 
 .media-card {
-  background: linear-gradient(145deg, var(--surface-dark), #2a1410);
+  background: transparent;
   border-radius: var(--radius-lg);
-  padding: 10px 10px 12px;
-  box-shadow: var(--shadow-strong);
+  padding: 0;
+  box-shadow: none;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease,
-    background 0.2s ease;
+  transition: transform 0.2s ease;
 }
 
 .media-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 22px 40px rgba(0, 0, 0, 0.8);
-  background: linear-gradient(145deg, #54281f, #2a1410);
 }
 
 .media-thumb-wrapper {
   position: relative;
-  border-radius: 16px;
+  border-radius: 14px;
   overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6),
+              0 2px 8px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(145deg, var(--surface-dark), #2a1410);
+  padding: 8px;
+}
+
+.media-card:hover .media-thumb-wrapper {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.7),
+              0 4px 12px rgba(0, 0, 0, 0.5),
+              0 0 0 1px rgba(239, 137, 132, 0.3);
 }
 
 .media-thumb {
   width: 100%;
   display: block;
+  border-radius: 8px;
+  transform: scale(1);
+  transition: transform 0.3s ease;
+}
+
+.media-card:hover .media-thumb {
+  transform: scale(1.05);
 }
 
 .play-button {
   position: absolute;
-  right: 10px;
-  bottom: 10px;
-  width: 38px;
-  height: 38px;
+  right: 16px;
+  bottom: 16px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   border: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at 30% 30%, #fff 0, #ef8984 40%, #7b3328 100%);
+  background: rgba(255, 255, 255, 0.95);
   color: #1e1211;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4),
+              0 2px 6px rgba(0, 0, 0, 0.3);
   cursor: pointer;
-  font-size: 18px;
-  padding-left: 2px;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  font-size: 20px;
+  padding-left: 3px;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
 }
 
 .play-button:hover {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.9);
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5),
+              0 3px 8px rgba(0, 0, 0, 0.4);
 }
 
 .play-button:active {
-  transform: translateY(0) scale(0.98);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.7);
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .media-meta {
   margin-top: 10px;
+  display: none;
 }
 
 .media-title {
