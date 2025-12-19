@@ -89,40 +89,234 @@
     if (views[key]) {
       views[key].classList.add("view-active");
       
-      // Load favorites when viewing profile
+      // Load favorites and draw radar chart when viewing profile
       if (key === 'profile') {
         loadFavorites();
+        setTimeout(() => drawPodcastRadarChart(), 100);
       }
     }
   }
 
   function loadFavorites() {
     const favoritesGrid = document.getElementById('favorites-grid');
+    const selectAllBtn = document.getElementById('select-all-btn');
+    const batchDownloadBtn = document.getElementById('batch-download-btn');
+    const favoritesCountEl = document.getElementById('favorites-count');
+    
     if (!favoritesGrid) return;
     
     const favorites = window.GeminiAPI.getFavoriteFlashcards();
     
+    // Update favorites count
+    if (favoritesCountEl) {
+      favoritesCountEl.textContent = favorites.length;
+    }
+    
     if (favorites.length === 0) {
       favoritesGrid.innerHTML = '<p class="placeholder-text">还没有收藏内容</p>';
+      if (selectAllBtn) selectAllBtn.style.display = 'none';
+      if (batchDownloadBtn) batchDownloadBtn.style.display = 'none';
       return;
     }
     
+    // Show action buttons
+    if (selectAllBtn) selectAllBtn.style.display = 'block';
+    if (batchDownloadBtn) batchDownloadBtn.style.display = 'block';
+    
     favoritesGrid.innerHTML = '';
-    favorites.forEach(fav => {
+    favorites.forEach((fav, index) => {
       const item = document.createElement('div');
       item.className = 'favorite-item';
+      item.dataset.index = index;
       item.innerHTML = `
+        <div class="favorite-checkbox">✓</div>
         <img src="${fav.imageSrc}" alt="Flashcard" />
         <div class="favorite-meta">
           <div>${fav.topic}</div>
           <div>${new Date(fav.timestamp).toLocaleDateString('zh-CN')}</div>
         </div>
       `;
-      item.addEventListener('click', () => {
-        // View the flashcard
-        alert('查看收藏的闪卡');
+      
+      // Toggle selection
+      item.addEventListener('click', (e) => {
+        if (item.classList.contains('selectable')) {
+          item.classList.toggle('selected');
+          if (item.classList.contains('selected')) {
+            selectedFavorites.add(index);
+          } else {
+            selectedFavorites.delete(index);
+          }
+        }
       });
+      
       favoritesGrid.appendChild(item);
+    });
+  }
+
+  // Nickname editing functions
+  function editNickname() {
+    const profileNameDisplay = document.getElementById('profile-name-display');
+    const nicknameInput = document.getElementById('nickname-input');
+    
+    if (!profileNameDisplay || !nicknameInput) return;
+    
+    const currentName = profileNameDisplay.textContent;
+    nicknameInput.value = currentName;
+    nicknameInput.style.display = 'block';
+    profileNameDisplay.style.display = 'none';
+    nicknameInput.focus();
+    nicknameInput.select();
+  }
+
+  function saveNickname() {
+    const profileNameDisplay = document.getElementById('profile-name-display');
+    const nicknameInput = document.getElementById('nickname-input');
+    
+    if (!profileNameDisplay || !nicknameInput) return;
+    
+    const newName = nicknameInput.value.trim();
+    if (newName) {
+      profileNameDisplay.textContent = newName;
+      localStorage.setItem('userNickname', newName);
+    }
+    
+    nicknameInput.style.display = 'none';
+    profileNameDisplay.style.display = 'block';
+  }
+
+  // Favorites batch selection
+  let selectedFavorites = new Set();
+
+  function toggleSelectAll() {
+    const favoriteItems = document.querySelectorAll('.favorite-item');
+    const allSelected = selectedFavorites.size === favoriteItems.length;
+    
+    selectedFavorites.clear();
+    
+    favoriteItems.forEach((item, index) => {
+      item.classList.add('selectable');
+      if (!allSelected) {
+        item.classList.add('selected');
+        selectedFavorites.add(index);
+      } else {
+        item.classList.remove('selected');
+      }
+    });
+    
+    const selectAllBtn = document.getElementById('select-all-btn');
+    if (selectAllBtn) {
+      selectAllBtn.textContent = allSelected ? '全选' : '取消全选';
+    }
+  }
+
+  function batchDownloadFavorites() {
+    if (selectedFavorites.size === 0) {
+      alert('请先选择要下载的收藏！');
+      return;
+    }
+    
+    const favorites = window.GeminiAPI.getFavoriteFlashcards();
+    const selectedIndexes = Array.from(selectedFavorites);
+    
+    selectedIndexes.forEach(index => {
+      const fav = favorites[index];
+      if (fav && fav.imageSrc) {
+        const link = document.createElement('a');
+        link.href = fav.imageSrc;
+        link.download = `flashcard_${fav.topic}_${index}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    });
+    
+    alert(`已下载 ${selectedFavorites.size} 个收藏！`);
+  }
+
+  // Draw Podcast Radar Chart
+  function drawPodcastRadarChart() {
+    const canvas = document.getElementById('podcast-radar-chart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = Math.min(centerX, centerY) - 60;
+    
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Data: 6 dimensions
+    const dimensions = ['Promotion', 'Price', 'Product', 'People', 'Place'];
+    const data = [75, 60, 50, 85, 70]; // Sample data (0-100 scale)
+    const angleStep = (Math.PI * 2) / dimensions.length;
+    
+    // Draw background circles
+    ctx.strokeStyle = 'rgba(239, 137, 132, 0.2)';
+    ctx.lineWidth = 1;
+    for (let i = 1; i <= 5; i++) {
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, (radius / 5) * i, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    
+    // Draw axes
+    ctx.strokeStyle = 'rgba(239, 137, 132, 0.3)';
+    ctx.lineWidth = 1;
+    dimensions.forEach((dim, i) => {
+      const angle = angleStep * i - Math.PI / 2;
+      const x = centerX + radius * Math.cos(angle);
+      const y = centerY + radius * Math.sin(angle);
+      
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      
+      // Draw labels
+      const labelX = centerX + (radius + 30) * Math.cos(angle);
+      const labelY = centerY + (radius + 30) * Math.sin(angle);
+      ctx.fillStyle = 'rgba(243, 214, 207, 0.9)';
+      ctx.font = '13px system-ui';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(dim, labelX, labelY);
+    });
+    
+    // Draw data polygon
+    ctx.strokeStyle = '#ef8984';
+    ctx.fillStyle = 'rgba(239, 137, 132, 0.25)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    
+    data.forEach((value, i) => {
+      const angle = angleStep * i - Math.PI / 2;
+      const distance = (value / 100) * radius;
+      const x = centerX + distance * Math.cos(angle);
+      const y = centerY + distance * Math.sin(angle);
+      
+      if (i === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    });
+    
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    
+    // Draw data points
+    ctx.fillStyle = '#ef8984';
+    data.forEach((value, i) => {
+      const angle = angleStep * i - Math.PI / 2;
+      const distance = (value / 100) * radius;
+      const x = centerX + distance * Math.cos(angle);
+      const y = centerY + distance * Math.sin(angle);
+      
+      ctx.beginPath();
+      ctx.arc(x, y, 4, 0, Math.PI * 2);
+      ctx.fill();
     });
   }
 
@@ -456,6 +650,18 @@
       btn.addEventListener('click', () => setActiveView(view));
     });
 
+    // Home header profile button
+    const homeProfileBtn = document.querySelector('.home-header .header-right[data-view="profile"]');
+    if (homeProfileBtn) {
+      homeProfileBtn.addEventListener("click", () => setActiveView("profile"));
+    }
+
+    // Profile back to home button
+    const backToHomeBtn = document.querySelector('.back-to-home-btn[data-view="home"]');
+    if (backToHomeBtn) {
+      backToHomeBtn.addEventListener("click", () => setActiveView("home"));
+    }
+
     const profileBtn = document.querySelector('.header-right[data-view="profile"]');
     if (profileBtn) {
       profileBtn.addEventListener("click", () => setActiveView("profile"));
@@ -597,6 +803,49 @@
         alert("评论功能即将上线 😊");
       });
     }
+
+    // Profile: Nickname editing
+    const editNicknameBtn = document.getElementById('edit-nickname-btn');
+    const nicknameInput = document.getElementById('nickname-input');
+    
+    if (editNicknameBtn) {
+      editNicknameBtn.addEventListener('click', editNickname);
+    }
+    
+    if (nicknameInput) {
+      nicknameInput.addEventListener('blur', saveNickname);
+      nicknameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          saveNickname();
+        }
+      });
+    }
+
+    // Load saved nickname on page load
+    const savedNickname = localStorage.getItem('userNickname');
+    const profileNameDisplay = document.getElementById('profile-name-display');
+    if (savedNickname && profileNameDisplay) {
+      profileNameDisplay.textContent = savedNickname;
+    }
+
+    // Favorites: Batch selection and download
+    const selectAllBtn = document.getElementById('select-all-btn');
+    const batchDownloadBtn = document.getElementById('batch-download-btn');
+    
+    if (selectAllBtn) {
+      selectAllBtn.addEventListener('click', toggleSelectAll);
+    }
+    
+    if (batchDownloadBtn) {
+      batchDownloadBtn.addEventListener('click', batchDownloadFavorites);
+    }
+
+    // Draw radar chart when profile view is active
+    setTimeout(() => {
+      if (views.profile && views.profile.classList.contains('view-active')) {
+        drawPodcastRadarChart();
+      }
+    }, 100);
   }
 
   if (document.readyState === "loading") {
@@ -604,4 +853,18 @@
   } else {
     bindEvents();
   }
+
+  // Test Gemini API connectivity on page load
+  setTimeout(() => {
+    if (window.GeminiAPI && window.GeminiAPI.testGeminiConnection) {
+      console.log('=== Gemini API Connection Test ===');
+      window.GeminiAPI.testGeminiConnection().then(result => {
+        if (result) {
+          console.log('✅ Gemini API 连接测试成功');
+        } else {
+          console.warn('⚠️ Gemini API 连接测试失败，请检查控制台错误信息');
+        }
+      });
+    }
+  }, 1000);
 })();

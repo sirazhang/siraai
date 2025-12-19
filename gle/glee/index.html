@@ -10,6 +10,18 @@
     <div class="app">
       <main class="main">
         <section id="view-home" class="view view-active">
+          <!-- Home Header -->
+          <header class="home-header">
+            <div class="header-left">
+              <img src="public/logo.png" alt="AIPod Logo" class="home-logo" />
+              <span class="brand-name">AIPod</span>
+            </div>
+            <button class="header-right" data-view="profile" type="button">
+              <img src="public/user.png" alt="用户" class="user-icon" />
+              <span class="header-right-label">个人中心</span>
+            </button>
+          </header>
+
           <section class="section section-library">
             <div class="section-header">
               <h2 class="section-title">博客素材库</h2>
@@ -104,7 +116,14 @@
         </section>
 
         <section id="view-profile" class="view">
-          <h2 class="section-title">个人中心</h2>
+          <!-- Profile Header with Back Button -->
+          <div class="profile-header">
+            <button class="back-to-home-btn" data-view="home" type="button">
+              <img src="public/home.png" alt="返回主页" class="nav-icon" />
+              <span class="nav-label">返回主页</span>
+            </button>
+            <h2 class="section-title">个人中心</h2>
+          </div>
           <div class="panel profile-panel">
             <div class="profile-section">
               <h3 class="profile-subtitle">用户信息</h3>
@@ -113,12 +132,25 @@
                   <img src="public/user.png" alt="用户头像" class="avatar-img" />
                 </div>
                 <div class="profile-details">
-                  <div class="profile-name">学习者</div>
+                  <div class="profile-name-container">
+                    <div class="profile-name" id="profile-name-display">学习者</div>
+                    <button class="edit-btn" id="edit-nickname-btn" type="button">✏️</button>
+                  </div>
+                  <input type="text" class="nickname-input" id="nickname-input" style="display: none;" />
                   <div class="profile-email">learner@example.com</div>
                   <div class="profile-joined">加入时间: 2024-12</div>
                 </div>
               </div>
             </div>
+            
+            <!-- Podcast Radar Chart Section -->
+            <div class="profile-section">
+              <h3 class="profile-subtitle">听播客类型分析</h3>
+              <div class="radar-chart-container">
+                <canvas id="podcast-radar-chart" width="400" height="300"></canvas>
+              </div>
+            </div>
+
             <div class="profile-section">
               <h3 class="profile-subtitle">学习统计</h3>
               <div class="stats-grid">
@@ -127,7 +159,7 @@
                   <div class="stat-label">完成练习</div>
                 </div>
                 <div class="stat-item">
-                  <div class="stat-value">3</div>
+                  <div class="stat-value" id="favorites-count">0</div>
                   <div class="stat-label">收藏内容</div>
                 </div>
                 <div class="stat-item">
@@ -154,7 +186,13 @@
               </div>
             </div>
             <div class="profile-section">
-              <h3 class="profile-subtitle">我的收藏</h3>
+              <div class="favorites-header">
+                <h3 class="profile-subtitle">我的收藏</h3>
+                <div class="favorites-actions">
+                  <button class="select-all-btn" id="select-all-btn" type="button" style="display: none;">全选</button>
+                  <button class="batch-download-btn" id="batch-download-btn" type="button" style="display: none;">批量下载</button>
+                </div>
+              </div>
               <div class="favorites-grid" id="favorites-grid">
                 <p class="placeholder-text">还没有收藏内容</p>
               </div>
