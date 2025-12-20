@@ -3,10 +3,9 @@ const GEMINI_API_KEY = 'AIzaSyD_-zf5YJLHAEuiEzZN2mbnmansxxcKkzQ';
 const GEMINI_TEXT_MODEL = 'gemini-3-pro-preview'; // Use Gemini 3 Pro for text generation
 const GEMINI_TEXT_API = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_TEXT_MODEL}:generateContent`;
 
-// Nano Banana API Configuration (using Gemini for image generation)
-const NANO_BANANA_API_KEY = 'AIzaSyD_-zf5YJLHAEuiEzZN2mbnmansxxcKkzQ';
-const IMAGEN_MODEL = 'imagen-3.0-generate-001'; // Imagen model for image generation
-const NANO_BANANA_API = `https://generativelanguage.googleapis.com/v1beta/models/${IMAGEN_MODEL}:predict`;
+// Gemini 2.5 Flash Image Generation Configuration
+const GEMINI_IMAGE_MODEL = 'gemini-2.5-flash-image'; // Gemini 2.5 Flash for image generation
+const GEMINI_IMAGE_API = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_IMAGE_MODEL}:generateContent`;
 
 // Store generated flashcards for favorites
 let generatedFlashcards = [];
@@ -60,26 +59,49 @@ async function testGeminiConnection() {
 }
 
 /**
- * Extract vocabulary from blog text and generate mind map structure
+ * Extract vocabulary from blog text and generate flashcard content
  */
-async function extractVocabularyMindMap(blogText) {
-  const prompt = `Now please first re-extract and refine the content of the text according to the following instructions:
-1. Extract the core content of the text and generate a text-based mind map.
-2. The text-based mind map must have clear hierarchical levels, and each parent level should contain no more than three sub-levels.
-3. The extracted wording at each level should not exceed five words.
-4. The content between levels must be interrelated, logical, and strictly derived from the original text.
-5. The extracted content at each level should be presented in bilingual form (Chinese and English).
-6. Do not include the introduction or conclusion of the document; focus mainly on the core content of the text.
+async function extractVocabularyMindMap(blogText, cardCount = 6, illustrationStyle = 'Zootopia character style') {
+  const prompt = `Your task is to generate EXACTLY ${cardCount} flashcards.
+This number is mandatory and must not be exceeded or reduced.
 
-Text to analyze:
+Input text:
 ${blogText}
 
-Please extract exactly 6 key vocabulary words with their meanings in this exact format:
-1. Word (phonetic) - Chinese meaning
-2. Word (phonetic) - Chinese meaning
-...
+Global illustration style (must be applied to EVERY flashcard):
+${illustrationStyle}
 
-Keep it simple and focused on the most important words.`;
+Each flashcard MUST contain:
+1. English word (single word or fixed phrase)
+2. IPA phonetic transcription
+3. Chinese meaning (concise, learner-friendly)
+4. Illustration description:
+   - Describe a concrete visual scene
+   - Follow the global illustration style strictly
+   - No text, captions, or letters in the image
+   - Focus on characters, actions, environment, and emotions
+
+Vocabulary selection rules:
+- Words must appear in or be clearly derived from the input text
+- Prefer concrete, visualizable, high-frequency vocabulary
+- Avoid abstract-only, rare, or overly technical terms
+- Do not repeat words with similar meanings
+
+Output format (STRICT — no extra explanations):
+
+Flashcard 1:
+- Word:
+- Phonetic:
+- Chinese:
+- Illustration description:
+
+Flashcard 2:
+- Word:
+- Phonetic:
+- Chinese:
+- Illustration description:
+
+(Continue until Flashcard ${cardCount})`;
 
   try {
     console.log('Calling Gemini API...');
@@ -175,14 +197,14 @@ Keep it simple and focused on the most important words.`;
 }
 
 /**
- * Generate flashcard image using Imagen API
- * Two-stage process: Gemini 2.0 extracts text → Imagen generates images
+ * Generate flashcard image using Gemini 2.5 Flash Image API
+ * Two-stage process: Gemini 3 Pro extracts text → Gemini 2.5 Flash generates images
  */
 async function generateFlashcardImage(vocabularyData, cardCount = 6, illustrationStyle = 'Zootopia character style') {
-  console.log('Generating flashcard images with Imagen:', { vocabularyData, cardCount, illustrationStyle });
+  console.log('Generating flashcard images with Gemini 2.5 Flash Image:', { vocabularyData, cardCount, illustrationStyle });
   
   try {
-    // Parse vocabulary data to extract words
+    // Parse vocabulary data to extract flashcard information
     const words = parseVocabularyWords(vocabularyData);
     
     if (words.length === 0) {
@@ -190,46 +212,58 @@ async function generateFlashcardImage(vocabularyData, cardCount = 6, illustratio
       return null;
     }
     
-    // Generate images for each word using Imagen
-    const imagePromises = words.slice(0, cardCount).map(async (word) => {
-      const prompt = `Create a ${illustrationStyle} illustration for the word "${word.english}" (${word.chinese}). The image should be colorful, educational, and suitable for a vocabulary flashcard.`;
+    console.log(`Parsed ${words.length} flashcards, generating images...`);
+    
+    // Generate images for each word using Gemini 2.5 Flash
+    const imagePromises = words.slice(0, cardCount).map(async (word, index) => {
+      // Use the illustration description from Gemini if available
+      const prompt = word.illustration 
+        ? word.illustration  // Use Gemini's detailed illustration description
+        : `Create a ${illustrationStyle} illustration for the word "${word.english}" (${word.chinese}). The image should be colorful, educational, and suitable for a vocabulary flashcard.`;
+      
+      console.log(`[${index + 1}/${cardCount}] Generating image for "${word.english}"`);
       
       try {
-        const response = await fetch(NANO_BANANA_API, {
+        const response = await fetch(GEMINI_IMAGE_API, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'x-goog-api-key': NANO_BANANA_API_KEY
+            'x-goog-api-key': GEMINI_API_KEY
           },
           body: JSON.stringify({
-            instances: [{
-              prompt: prompt
-            }],
-            parameters: {
-              sampleCount: 1,
-              aspectRatio: "1:1",
-              safetyFilterLevel: "block_some",
-              personGeneration: "allow_adult"
-            }
+            contents: [{
+              parts: [{
+                text: prompt
+              }]
+            }]
           })
         });
         
         if (!response.ok) {
-          console.error(`Imagen API error for "${word.english}": ${response.status}`);
+          console.error(`Gemini Image API error for "${word.english}": ${response.status}`);
           const errorData = await response.json().catch(() => ({}));
           console.error('Error details:', errorData);
           return null;
         }
         
         const data = await response.json();
-        // Imagen returns base64 encoded images
-        if (data.predictions && data.predictions[0]) {
-          return {
-            word: word.english,
-            meaning: word.chinese,
-            imageUrl: `data:image/png;base64,${data.predictions[0].bytesBase64Encoded}`
-          };
+        console.log(`Image response for "${word.english}":`, data);
+        
+        // Gemini 2.5 Flash returns images in inlineData format
+        if (data.candidates?.[0]?.content?.parts) {
+          for (const part of data.candidates[0].content.parts) {
+            if (part.inlineData) {
+              return {
+                word: word.english,
+                phonetic: word.phonetic,
+                meaning: word.chinese,
+                imageUrl: `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`
+              };
+            }
+          }
         }
+        
+        console.warn(`No image data found for "${word.english}"`);
         return null;
       } catch (error) {
         console.error(`Error generating image for "${word.english}":`, error);
@@ -238,7 +272,10 @@ async function generateFlashcardImage(vocabularyData, cardCount = 6, illustratio
     });
     
     const images = await Promise.all(imagePromises);
-    return images.filter(img => img !== null);
+    const successfulImages = images.filter(img => img !== null);
+    
+    console.log(`Successfully generated ${successfulImages.length}/${cardCount} images`);
+    return successfulImages.length > 0 ? successfulImages : null;
     
   } catch (error) {
     console.error('Error in flashcard image generation:', error);
@@ -247,19 +284,33 @@ async function generateFlashcardImage(vocabularyData, cardCount = 6, illustratio
 }
 
 /**
- * Parse vocabulary data to extract words
+ * Parse vocabulary data to extract flashcard information
+ * New format:
+ * Flashcard 1:
+ * - Word: example
+ * - Phonetic: /ɪɡˈzɑːmpl/
+ * - Chinese: 例子
+ * - Illustration description: ...
  */
 function parseVocabularyWords(vocabularyData) {
   const words = [];
-  const lines = vocabularyData.split('\n');
+  const flashcardBlocks = vocabularyData.split(/Flashcard \d+:/i);
   
-  for (const line of lines) {
-    // Match pattern: "1. Word (phonetic) - Chinese meaning"
-    const match = line.match(/\d+\.\s*([a-zA-Z]+)\s*\([^)]+\)\s*-\s*(.+)/);
-    if (match) {
+  for (const block of flashcardBlocks) {
+    if (!block.trim()) continue;
+    
+    // Extract fields using regex
+    const wordMatch = block.match(/[-\*]?\s*Word:\s*(.+?)$/im);
+    const phoneticMatch = block.match(/[-\*]?\s*Phonetic:\s*(.+?)$/im);
+    const chineseMatch = block.match(/[-\*]?\s*Chinese:\s*(.+?)$/im);
+    const illustrationMatch = block.match(/[-\*]?\s*Illustration description:\s*(.+?)(?=\n[-\*]?\s*Word:|$)/is);
+    
+    if (wordMatch && chineseMatch) {
       words.push({
-        english: match[1].trim(),
-        chinese: match[2].trim()
+        english: wordMatch[1].trim(),
+        phonetic: phoneticMatch ? phoneticMatch[1].trim() : '',
+        chinese: chineseMatch[1].trim(),
+        illustration: illustrationMatch ? illustrationMatch[1].trim() : ''
       });
     }
   }

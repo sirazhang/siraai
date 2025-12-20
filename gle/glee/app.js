@@ -498,7 +498,11 @@
     try {
       // Step 1: Extract vocabulary using Gemini Text API
       console.log('Extracting vocabulary from blog text...');
-      const vocabularyData = await window.GeminiAPI.extractVocabularyMindMap(blogText);
+      const vocabularyData = await window.GeminiAPI.extractVocabularyMindMap(
+        blogText,
+        cardCount,
+        illustrationStyle
+      );
       console.log('Vocabulary extracted:', vocabularyData);
       
       // Step 2: Generate flashcard image (currently returns null, shows text fallback)
