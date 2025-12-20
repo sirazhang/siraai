@@ -363,12 +363,151 @@ function printFlashcard(imageElement) {
   }, 250);
 }
 
+/**
+ * Generate mind map text structure using Gemini 3 Pro
+ * Step 1: Generate hierarchical text structure (max 3 tiers, ≤5 keywords per node)
+ */
+async function generateMindMapText(blogText) {
+  const prompt = `Input text:
+${blogText}
+
+Convert this text to a max 3-tier mind map. ≤5 keywords per node. Use indented format.
+
+Output format:
+Main Topic
+  Subtopic 1
+    Detail 1.1
+    Detail 1.2
+  Subtopic 2
+    Detail 2.1
+    Detail 2.2
+
+Keep it simple, visual, and suitable for children.`;
+
+  try {
+    console.log('Generating mind map structure with Gemini 3 Pro...');
+    console.log('API URL:', GEMINI_TEXT_API);
+    
+    const response = await fetch(GEMINI_TEXT_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': GEMINI_API_KEY
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: prompt
+          }]
+        }],
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 2000,
+        }
+      })
+    });
+
+    console.log('Mind map text response status:', response.status);
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('API Error Details:', errorData);
+      throw new Error(`Gemini API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    // Extract text from response
+    let responseText = null;
+    if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
+      responseText = data.candidates[0].content.parts[0].text;
+    } else if (data.candidates?.[0]?.thought) {
+      responseText = data.candidates[0].thought;
+    }
+    
+    if (!responseText) {
+      console.error('Full API response:', JSON.stringify(data, null, 2));
+      throw new Error('Invalid response format: no text content found');
+    }
+    
+    console.log('Mind map structure generated:', responseText);
+    return responseText;
+  } catch (error) {
+    console.error('Error generating mind map text:', error);
+    throw error;
+  }
+}
+
+/**
+ * Generate mind map image using Gemini 2.5 Flash Image
+ * Step 2: Create hand-drawn style visual mind map based on text structure
+ */
+async function generateMindMapImage(mindMapText) {
+  const prompt = `Create a hand-drawn style mind map for children based on the text content:
+
+${mindMapText}
+
+Requirements:
+- Hand-drawn, colorful, child-friendly style
+- Include appropriate illustrative images for each node
+- Clear hierarchical structure
+- Use simple, readable fonts
+- Add cute icons and decorations
+- Make it visually engaging and educational`;
+
+  try {
+    console.log('Generating mind map image with Gemini 2.5 Flash Image...');
+    
+    const response = await fetch(GEMINI_IMAGE_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': GEMINI_API_KEY
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: prompt
+          }]
+        }]
+      })
+    });
+    
+    if (!response.ok) {
+      console.error(`Mind map image API error: ${response.status}`);
+      const errorData = await response.json().catch(() => ({}));
+      console.error('Error details:', errorData);
+      return null;
+    }
+    
+    const data = await response.json();
+    console.log('Mind map image response:', data);
+    
+    // Extract image from inlineData format
+    if (data.candidates?.[0]?.content?.parts) {
+      for (const part of data.candidates[0].content.parts) {
+        if (part.inlineData) {
+          return `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
+        }
+      }
+    }
+    
+    console.warn('No image data found in response');
+    return null;
+  } catch (error) {
+    console.error('Error generating mind map image:', error);
+    return null;
+  }
+}
+
 // Export functions for use in main app
 window.GeminiAPI = {
   extractVocabularyMindMap,
   generateFlashcardImage,
+  generateMindMapText,
+  generateMindMapImage,
   saveFlashcardToFavorites,
   getFavoriteFlashcards,
   printFlashcard,
-  testGeminiConnection  // Add test function
+  testGeminiConnection
 };

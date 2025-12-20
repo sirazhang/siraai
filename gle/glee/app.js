@@ -641,6 +641,101 @@
     }
   }
 
+  // ========== Mind Map Functions ==========
+  let currentMindMapImage = null;
+
+  async function generateMindMap() {
+    if (!blogText) {
+      alert('请先选择一个主题！');
+      return;
+    }
+
+    const mindmapResult = document.getElementById('mindmap-result');
+    const mindmapLoading = document.getElementById('mindmap-loading');
+    const mindmapImageContainer = document.getElementById('mindmap-image-container');
+
+    // Show loading
+    if (mindmapResult) mindmapResult.style.display = 'block';
+    if (mindmapLoading) mindmapLoading.style.display = 'flex';
+    if (mindmapImageContainer) mindmapImageContainer.innerHTML = '';
+
+    try {
+      // Step 1: Generate mind map text structure with Gemini 3 Pro
+      console.log('Step 1: Generating mind map structure...');
+      const mindMapText = await window.GeminiAPI.generateMindMapText(blogText);
+      console.log('Mind map structure:', mindMapText);
+
+      // Step 2: Generate mind map image with Gemini 2.5 Flash Image
+      console.log('Step 2: Generating mind map image...');
+      const imageData = await window.GeminiAPI.generateMindMapImage(mindMapText);
+
+      // Hide loading
+      if (mindmapLoading) mindmapLoading.style.display = 'none';
+
+      // Display result
+      if (imageData && mindmapImageContainer) {
+        const img = document.createElement('img');
+        img.src = imageData;
+        img.alt = 'Mind Map';
+        img.style.cssText = `
+          width: 100%;
+          border-radius: 12px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        `;
+        mindmapImageContainer.appendChild(img);
+        currentMindMapImage = img;
+        console.log('Mind map generated successfully!');
+      } else {
+        // Fallback: show text structure
+        const textDiv = document.createElement('div');
+        textDiv.style.cssText = `
+          padding: 20px;
+          background: rgba(0,0,0,0.2);
+          border-radius: 12px;
+          color: var(--text-main);
+          white-space: pre-wrap;
+          line-height: 1.8;
+          font-size: 14px;
+          max-height: 400px;
+          overflow-y: auto;
+        `;
+        textDiv.innerHTML = `<strong style="color: var(--accent); font-size: 16px;">思维导图结构：</strong>\n\n${mindMapText}`;
+        mindmapImageContainer.appendChild(textDiv);
+        currentMindMapImage = textDiv;
+        console.log('Displaying text-based mind map (image generation unavailable)');
+      }
+
+    } catch (error) {
+      console.error('Error generating mind map:', error);
+      if (mindmapLoading) mindmapLoading.style.display = 'none';
+      alert('生成思维导图时出错：' + error.message);
+    }
+  }
+
+  function printCurrentMindMap() {
+    if (currentMindMapImage) {
+      window.GeminiAPI.printFlashcard(currentMindMapImage);
+    } else {
+      alert('没有可打印的思维导图！');
+    }
+  }
+
+  function favoriteCurrentMindMap() {
+    if (!currentMindMapImage) {
+      alert('没有可收藏的思维导图！');
+      return;
+    }
+
+    const mindmapData = {
+      topic: currentTopic,
+      imageSrc: currentMindMapImage.src || '',
+      type: 'mindmap'
+    };
+
+    window.GeminiAPI.saveFlashcardToFavorites(mindmapData);
+    alert('思维导图已收藏到个人中心！');
+  }
+
   function openNotebookForTopic(topicKey) {
     setActiveView("notebook");
     loadTopic(topicKey);
@@ -788,6 +883,24 @@
     // Flashcard: Favorite
     if (favoriteFlashcardBtn) {
       favoriteFlashcardBtn.addEventListener('click', favoriteCurrentFlashcard);
+    }
+
+    // Mind Map: Generate
+    const generateMindmapBtn = document.getElementById('generate-mindmap');
+    if (generateMindmapBtn) {
+      generateMindmapBtn.addEventListener('click', generateMindMap);
+    }
+
+    // Mind Map: Print
+    const printMindmapBtn = document.getElementById('print-mindmap');
+    if (printMindmapBtn) {
+      printMindmapBtn.addEventListener('click', printCurrentMindMap);
+    }
+
+    // Mind Map: Favorite
+    const favoriteMindmapBtn = document.getElementById('favorite-mindmap');
+    if (favoriteMindmapBtn) {
+      favoriteMindmapBtn.addEventListener('click', favoriteCurrentMindMap);
     }
 
     // Community buttons

@@ -292,13 +292,28 @@
                   </div>
                 </div>
 
-                <!-- Other Tabs (Placeholders) -->
+                <!-- Mind Map Tab -->
                 <div class="tab-content" id="tab-mindmap">
                   <div class="tool-header">
                     <img src="public/mind.png" alt="思维导图" class="tool-icon" />
                     <span class="tool-title">思维导图</span>
                   </div>
-                  <p class="placeholder-text">思维导图功能开发中...</p>
+                  <div class="tool-actions">
+                    <button class="primary-btn" id="generate-mindmap">生成思维导图</button>
+                  </div>
+
+                  <!-- Generated Content Display -->
+                  <div class="generated-content" id="mindmap-result" style="display: none;">
+                    <div class="loading-spinner" id="mindmap-loading" style="display: none;">
+                      <div class="spinner"></div>
+                      <p>正在生成思维导图...</p>
+                    </div>
+                    <div class="result-image" id="mindmap-image-container"></div>
+                    <div class="result-actions">
+                      <button class="action-btn" id="print-mindmap">打印</button>
+                      <button class="action-btn" id="favorite-mindmap">收藏</button>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="tab-content" id="tab-monopoly">
