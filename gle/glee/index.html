@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AIPod 博客</title>
+    <title>Clique 博客</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -13,8 +13,8 @@
           <!-- Home Header -->
           <header class="home-header">
             <div class="header-left">
-              <img src="public/logo.png" alt="AIPod Logo" class="home-logo" />
-              <span class="brand-name">AIPod</span>
+              <img src="public/logo.png" alt="Clique Logo" class="home-logo" />
+              <span class="brand-name">Clique</span>
             </div>
             <button class="header-right" data-view="profile" type="button">
               <img src="public/user.png" alt="用户" class="user-icon" />
@@ -94,22 +94,110 @@
 
           <section class="section section-community">
             <h2 class="section-title">精选社区</h2>
-            <div class="community-card">
-              <img
-                src="public/community1.png"
-                alt="社区精选练习纸示例"
-                class="community-image"
-              />
-              <div class="community-footer">
-                <div class="community-user">@一只学习的猫</div>
-                <div class="community-actions">
-                  <button class="icon-button" type="button" data-action="favorite">
-                    收藏
-                  </button>
-                  <button class="icon-button" type="button" data-action="comment">
-                    评论
-                  </button>
+            <div class="community-carousel">
+              <div class="carousel-container">
+                <div class="carousel-slide active" data-topic="halloween" data-slide-index="0">
+                  <div class="barrage-container" id="barrage-0"></div>
+                  <img
+                    src="public/community1.png"
+                    alt="社区精选练习纸示例"
+                    class="community-image"
+                  />
+                  <div class="community-footer">
+                    <div class="community-user">@一只学习的猫</div>
+                    <div class="community-actions">
+                      <button class="icon-button" type="button" data-action="favorite">
+                        收藏
+                      </button>
+                      <button class="icon-button" type="button" data-action="comment">
+                        评论
+                      </button>
+                    </div>
+                  </div>
                 </div>
+                <div class="carousel-slide" data-topic="christmas" data-slide-index="1">
+                  <div class="barrage-container" id="barrage-1"></div>
+                  <img
+                    src="public/community2.png"
+                    alt="社区精选练习纸示例"
+                    class="community-image"
+                  />
+                  <div class="community-footer">
+                    <div class="community-user">@创意学习者</div>
+                    <div class="community-actions">
+                      <button class="icon-button" type="button" data-action="favorite">
+                        收藏
+                      </button>
+                      <button class="icon-button" type="button" data-action="comment">
+                        评论
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-slide" data-topic="halloween" data-slide-index="2">
+                  <div class="barrage-container" id="barrage-2"></div>
+                  <img
+                    src="public/community3.png"
+                    alt="社区精选练习纸示例"
+                    class="community-image"
+                  />
+                  <div class="community-footer">
+                    <div class="community-user">@英语小达人</div>
+                    <div class="community-actions">
+                      <button class="icon-button" type="button" data-action="favorite">
+                        收藏
+                      </button>
+                      <button class="icon-button" type="button" data-action="comment">
+                        评论
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-slide" data-topic="gossip" data-slide-index="3">
+                  <div class="barrage-container" id="barrage-3"></div>
+                  <img
+                    src="public/community4.png"
+                    alt="社区精选练习纸示例"
+                    class="community-image"
+                  />
+                  <div class="community-footer">
+                    <div class="community-user">@快乐学习</div>
+                    <div class="community-actions">
+                      <button class="icon-button" type="button" data-action="favorite">
+                        收藏
+                      </button>
+                      <button class="icon-button" type="button" data-action="comment">
+                        评论
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-slide" data-topic="ielts" data-slide-index="4">
+                  <div class="barrage-container" id="barrage-4"></div>
+                  <img
+                    src="public/community5.png"
+                    alt="社区精选练习纸示例"
+                    class="community-image"
+                  />
+                  <div class="community-footer">
+                    <div class="community-user">@雅思冲刺</div>
+                    <div class="community-actions">
+                      <button class="icon-button" type="button" data-action="favorite">
+                        收藏
+                      </button>
+                      <button class="icon-button" type="button" data-action="comment">
+                        评论
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-indicators">
+                <span class="indicator active" data-index="0"></span>
+                <span class="indicator" data-index="1"></span>
+                <span class="indicator" data-index="2"></span>
+                <span class="indicator" data-index="3"></span>
+                <span class="indicator" data-index="4"></span>
               </div>
             </div>
           </section>
@@ -119,52 +207,64 @@
           <!-- Profile Header with Back Button -->
           <div class="profile-header">
             <button class="back-to-home-btn" data-view="home" type="button">
-              <img src="public/home.png" alt="返回主页" class="nav-icon" />
-              <span class="nav-label">返回主页</span>
+              <img src="public/home.png" alt="主页" class="nav-icon" />
+              <span class="nav-label">主页</span>
             </button>
-            <h2 class="section-title">个人中心</h2>
           </div>
           <div class="panel profile-panel">
-            <div class="profile-section">
-              <h3 class="profile-subtitle">用户信息</h3>
-              <div class="profile-info">
-                <div class="profile-avatar">
-                  <img src="public/user.png" alt="用户头像" class="avatar-img" />
-                </div>
-                <div class="profile-details">
-                  <div class="profile-name-container">
-                    <div class="profile-name" id="profile-name-display">学习者</div>
-                    <button class="edit-btn" id="edit-nickname-btn" type="button">✏️</button>
+            <!-- User Info Section with Membership on Right -->
+            <div class="profile-section user-info-section">
+              <div class="user-info-left">
+                <h3 class="profile-subtitle">用户信息</h3>
+                <div class="profile-info">
+                  <div class="profile-avatar">
+                    <img src="public/user.png" alt="用户头像" class="avatar-img" />
                   </div>
-                  <input type="text" class="nickname-input" id="nickname-input" style="display: none;" />
-                  <div class="profile-email">learner@example.com</div>
-                  <div class="profile-joined">加入时间: 2024-12</div>
+                  <div class="profile-details">
+                    <div class="profile-name-container">
+                      <div class="profile-name" id="profile-name-display">学习者</div>
+                      <button class="edit-btn" id="edit-nickname-btn" type="button">✏️</button>
+                    </div>
+                    <input type="text" class="nickname-input" id="nickname-input" style="display: none;" />
+                  </div>
+                </div>
+              </div>
+              
+              <div class="membership-info-right">
+                <button class="upgrade-btn" id="upgrade-membership-btn" type="button">升级会员</button>
+                <div class="quota-info">
+                  <span class="quota-label">每日免费下载次数：</span>
+                  <span class="quota-value">
+                    <span id="download-used">0</span> / <span id="download-limit">2</span>
+                  </span>
                 </div>
               </div>
             </div>
             
-            <!-- Podcast Radar Chart Section -->
-            <div class="profile-section">
-              <h3 class="profile-subtitle">听播客类型分析</h3>
-              <div class="radar-chart-container">
-                <canvas id="podcast-radar-chart" width="400" height="300"></canvas>
+            <!-- Podcast Analysis Section with Stats on Right -->
+            <div class="profile-section podcast-analysis-section">
+              <div class="podcast-analysis-left">
+                <h3 class="profile-subtitle">听播客类型分析</h3>
+                <div class="radar-chart-container">
+                  <canvas id="podcast-radar-chart" width="400" height="300"></canvas>
+                </div>
               </div>
-            </div>
-
-            <div class="profile-section">
-              <h3 class="profile-subtitle">学习统计</h3>
-              <div class="stats-grid">
-                <div class="stat-item">
-                  <div class="stat-value">12</div>
-                  <div class="stat-label">完成练习</div>
-                </div>
-                <div class="stat-item">
-                  <div class="stat-value" id="favorites-count">0</div>
-                  <div class="stat-label">收藏内容</div>
-                </div>
-                <div class="stat-item">
-                  <div class="stat-value">45</div>
-                  <div class="stat-label">学习时长(分钟)</div>
+              
+              <div class="podcast-analysis-right">
+                <h3 class="profile-subtitle">学习统计</h3>
+                <div class="stats-grid">
+                  <div class="stat-item">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">完成练习</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-value" id="favorites-count">0</div>
+                    <div class="stat-label">收藏内容</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-value">45</div>
+                    <div class="stat-label">学习时长(分钟)</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -172,16 +272,25 @@
               <h3 class="profile-subtitle">最近练习</h3>
               <div class="recent-list">
                 <div class="recent-item">
-                  <span class="recent-topic">IELTS</span>
-                  <span class="recent-date">2天前</span>
+                  <img src="public/ieltscover.png" alt="IELTS" class="recent-cover" />
+                  <div class="recent-info">
+                    <span class="recent-topic">IELTS</span>
+                    <span class="recent-date">2天前</span>
+                  </div>
                 </div>
                 <div class="recent-item">
-                  <span class="recent-topic">Christmas</span>
-                  <span class="recent-date">5天前</span>
+                  <img src="public/christmascover.png" alt="Christmas" class="recent-cover" />
+                  <div class="recent-info">
+                    <span class="recent-topic">Christmas</span>
+                    <span class="recent-date">5天前</span>
+                  </div>
                 </div>
                 <div class="recent-item">
-                  <span class="recent-topic">Halloween</span>
-                  <span class="recent-date">1周前</span>
+                  <img src="public/halloweencover.png" alt="Halloween" class="recent-cover" />
+                  <div class="recent-info">
+                    <span class="recent-topic">Halloween</span>
+                    <span class="recent-date">1周前</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -194,7 +303,10 @@
                 </div>
               </div>
               <div class="favorites-grid" id="favorites-grid">
-                <p class="placeholder-text">还没有收藏内容</p>
+                <div class="placeholder-container">
+                  <img src="public/status.png" alt="空状态" class="placeholder-image" />
+                  <p class="placeholder-text">还没有收藏内容</p>
+                </div>
               </div>
             </div>
           </div>
@@ -204,11 +316,11 @@
           <div class="notebook-container">
             <!-- Header with navigation -->
             <div class="notebook-nav">
-              <button class="nav-icon-btn" data-view="home" type="button">
+              <button class="nav-icon-btn home-btn" data-view="home" type="button">
                 <img src="public/home.png" alt="主页" class="nav-icon" />
                 <span class="nav-label">主页</span>
               </button>
-              <button class="nav-icon-btn" data-view="profile" type="button">
+              <button class="nav-icon-btn profile-btn" data-view="profile" type="button">
                 <img src="public/user.png" alt="个人中心" class="nav-icon" />
               </button>
             </div>
@@ -316,37 +428,119 @@
                   </div>
                 </div>
 
+                <!-- Monopoly Tab -->
                 <div class="tab-content" id="tab-monopoly">
                   <div class="tool-header">
-                    <img src="public/game1.png" alt="大富翁" class="tool-icon" />
+                    <img src="public/gameicon.png" alt="大富翁" class="tool-icon" />
                     <span class="tool-title">大富翁</span>
                   </div>
-                  <p class="placeholder-text">大富翁功能开发中...</p>
+                  <div class="tool-actions">
+                    <button class="primary-btn" id="download-board">下载棋盘</button>
+                    <button class="secondary-btn" id="generate-task-cards">生成任务卡</button>
+                  </div>
+
+                  <!-- Board Selection Modal -->
+                  <div class="board-selection" id="board-selection" style="display: none;">
+                    <h4 class="selection-title">选择棋盘</h4>
+                    <div class="board-options">
+                      <div class="board-option" data-board="game1">
+                        <img src="public/game1.png" alt="棋盘1" class="board-preview" />
+                        <div class="board-actions">
+                          <button class="option-action-btn" onclick="printBoard('game1')">打印</button>
+                          <button class="option-action-btn" onclick="favoriteBoard('game1')">收藏</button>
+                        </div>
+                      </div>
+                      <div class="board-option" data-board="game2">
+                        <img src="public/game2.png" alt="棋盘2" class="board-preview" />
+                        <div class="board-actions">
+                          <button class="option-action-btn" onclick="printBoard('game2')">打印</button>
+                          <button class="option-action-btn" onclick="favoriteBoard('game2')">收藏</button>
+                        </div>
+                      </div>
+                    </div>
+                    <button class="close-selection-btn" id="close-board-selection">关闭</button>
+                  </div>
+
+                  <!-- Generated Task Cards Display -->
+                  <div class="generated-content" id="task-cards-result" style="display: none;">
+                    <div class="loading-spinner" id="task-cards-loading" style="display: none;">
+                      <div class="spinner"></div>
+                      <p>正在生成任务卡...</p>
+                    </div>
+                    <div class="result-image" id="task-cards-container"></div>
+                    <div class="result-actions">
+                      <button class="action-btn" id="print-task-cards">打印</button>
+                      <button class="action-btn" id="favorite-task-cards">收藏</button>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="tab-content" id="tab-bingo">
                   <div class="tool-header">
-                    <img src="public/gameicon.png" alt="Bingo" class="tool-icon" />
+                    <img src="public/bingoicon.png" alt="Bingo" class="tool-icon" />
                     <span class="tool-title">Bingo</span>
                   </div>
-                  <p class="placeholder-text">Bingo功能开发中...</p>
+                  <div class="tool-actions">
+                    <button class="primary-btn" id="generate-bingo">生成Bingo</button>
+                  </div>
+
+                  <!-- Customization Options -->
+                  <div class="customize-panel" style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
+                    <div class="customize-option">
+                      <label>Bingo数量：</label>
+                      <div class="option-group">
+                        <button class="option-btn active" data-bingo-count="9">标准 (9张)</button>
+                        <button class="option-btn" data-bingo-count="15">更多 (15张)</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Bingo Display -->
+                  <div class="generated-content" id="bingo-result" style="display: none;">
+                    <div class="loading-spinner" id="bingo-loading" style="display: none;">
+                      <div class="spinner"></div>
+                      <p>正在生成Bingo...</p>
+                    </div>
+                    <div class="result-image" id="bingo-image-container"></div>
+                    <div class="result-actions">
+                      <button class="action-btn" id="print-bingo">打印</button>
+                      <button class="action-btn" id="favorite-bingo">收藏</button>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <!-- Right column: AI Dialogue -->
+              <!-- Right column: Comment Section -->
               <div class="notebook-right">
-                <h3 class="section-subtitle">AI对话</h3>
-                <div class="ai-chat-area">
-                  <div class="chat-messages" id="chat-messages">
-                    <div class="chat-message ai-message">
-                      你好！我是你的AI助手，有什么可以帮助你的吗？
+                <h3 class="section-subtitle">评论区</h3>
+                <div class="comment-area">
+                  <!-- AI Summary -->
+                  <div class="ai-summary-container">
+                    <div class="ai-summary-loading" id="summary-loading" style="display: none;">
+                      <div class="spinner"></div>
+                      <p>正在生成总结...</p>
+                    </div>
+                    <div class="ai-summary" id="ai-summary">
+                      <div class="summary-label">AI总结</div>
+                      <div class="summary-text" id="summary-text">点击播放按钮开始收听博客内容...</div>
                     </div>
                   </div>
-                  <div class="chat-input-container">
-                    <input type="text" class="chat-input" id="chat-input" placeholder="输入消息..." />
-                    <button class="chat-send-btn" id="chat-send" type="button">
-                      发送
+                  
+                  <!-- User Comment Input -->
+                  <div class="comment-input-container">
+                    <textarea class="comment-input" id="comment-input" placeholder="写下你的评论..." rows="3"></textarea>
+                    <button class="generate-share-btn" id="generate-share-btn" type="button">
+                      生成分享卡片
                     </button>
+                  </div>
+                  
+                  <!-- Share Card Preview -->
+                  <div class="share-card-preview" id="share-card-preview" style="display: none;">
+                    <canvas id="share-card-canvas" width="800" height="600"></canvas>
+                    <div class="share-card-actions">
+                      <button class="action-btn" id="download-share-card">下载卡片</button>
+                      <button class="action-btn" id="favorite-share-card">收藏</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -356,6 +550,67 @@
       </main>
     </div>
 
+    <!-- Pricing Modal -->
+    <div class="pricing-modal" id="pricing-modal" style="display: none;">
+      <div class="pricing-overlay" id="pricing-overlay"></div>
+      <div class="pricing-content">
+        <button class="close-pricing-btn" id="close-pricing-btn" type="button">×</button>
+        <h2 class="pricing-title">会员定价中心</h2>
+        <div class="pricing-cards">
+          <!-- Free Plan -->
+          <div class="pricing-card">
+            <img src="public/free.png" alt="Free 版本" class="pricing-image" />
+            <div class="pricing-info">
+              <h3 class="plan-name">Free 版本</h3>
+              <div class="plan-price">免费</div>
+              <ul class="plan-features">
+                <li>全部博客资源免费听</li>
+                <li>每日 2 次 练习纸下载</li>
+                <li>超出次数需升级会员</li>
+              </ul>
+              <button class="plan-btn current-plan" disabled>当前计划</button>
+            </div>
+          </div>
+          
+          <!-- Monthly Plan -->
+          <div class="pricing-card featured">
+            <div class="popular-badge">热门</div>
+            <img src="public/month.png" alt="月卡" class="pricing-image" />
+            <div class="pricing-info">
+              <h3 class="plan-name">月卡</h3>
+              <div class="plan-price">¥19.9<span class="price-period"> / 月</span></div>
+              <ul class="plan-features">
+                <li>全部博客资源无限阅读</li>
+                <li>练习纸 无限次下载</li>
+                <li>新练习纸内容即时使用</li>
+                <li>无下载次数限制</li>
+                <li>支持随时取消</li>
+              </ul>
+              <button class="plan-btn" data-plan="monthly">选择月卡</button>
+            </div>
+          </div>
+          
+          <!-- Annual Plan -->
+          <div class="pricing-card">
+            <div class="save-badge">节省 35%</div>
+            <img src="public/year.png" alt="年卡" class="pricing-image" />
+            <div class="pricing-info">
+              <h3 class="plan-name">年卡</h3>
+              <div class="plan-price">¥129<span class="price-period"> / 年</span></div>
+              <ul class="plan-features">
+                <li>全部博客资源无限阅读</li>
+                <li>练习纸 无限次下载</li>
+                <li>新内容优先解锁</li>
+                <li>后续新增权益自动享受</li>
+              </ul>
+              <button class="plan-btn" data-plan="annual">选择年卡</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="tongyi-api.js"></script>
     <script src="gemini-api.js"></script>
     <script src="app.js"></script>
   </body>
