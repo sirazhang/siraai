@@ -1,7 +1,7 @@
 // Tongyi Qianwen API Integration
 // 通义千问 API 集成
 
-const TONGYI_API_KEY = 'sk-5a2dc20b5803456bae6bf37affee450e';
+const TONGYI_API_KEY = 'sk-';
 const TONGYI_API_URL = 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions';
 
 /**
