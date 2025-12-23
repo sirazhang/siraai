@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Clique 博客</title>
+    <title>Clique 播客</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -24,7 +24,7 @@
 
           <section class="section section-library">
             <div class="section-header">
-              <h2 class="section-title">博客素材库</h2>
+              <h2 class="section-title">播客Podcast素材库</h2>
             </div>
             <div class="card-grid">
               <article class="media-card" data-topic="ielts">
@@ -329,9 +329,9 @@
             <div class="notebook-grid">
               <!-- Left column: Blog -->
               <div class="notebook-left">
-                <h3 class="section-subtitle">博客</h3>
+                <h3 class="section-subtitle">播客Podcast</h3>
                 <div class="blog-image-container">
-                  <img src="public/ielts.png" alt="博客图" class="blog-image" id="blog-image" />
+                  <img src="public/ielts.png" alt="播客图" class="blog-image" id="blog-image" />
                   <div class="audio-controls-overlay">
                     <button class="control-btn" id="prev-btn" type="button">
                       <img src="public/back.png" alt="后退" class="control-icon" />
@@ -345,7 +345,7 @@
                   </div>
                 </div>
                 <div class="blog-text" id="blog-text">
-                  点击播放按钮开始收听博客内容...
+                  点击播放按钮开始收听播客Podcast内容...
                 </div>
                 <audio id="audio-element" style="display: none;">
                   <source src="" type="audio/mpeg">
@@ -360,6 +360,7 @@
                   <button class="tab-btn" data-tab="mindmap">思维导图</button>
                   <button class="tab-btn" data-tab="monopoly">大富翁</button>
                   <button class="tab-btn" data-tab="bingo">Bingo</button>
+                  <button class="tab-btn" data-tab="fill-blank">填空题</button>
                 </div>
 
                 <!-- Flashcard Tab -->
@@ -508,6 +509,51 @@
                     </div>
                   </div>
                 </div>
+                
+                <!-- Fill in the Blank Tab -->
+                <div class="tab-content" id="tab-fill-blank">
+                  <div class="tool-header">
+                    <img src="public/flashcard.png" alt="填空题" class="tool-icon" />
+                    <span class="tool-title">句子填空题</span>
+                  </div>
+                  <div class="tool-actions">
+                    <button class="primary-btn" id="generate-fill-blank">生成填空题</button>
+                  </div>
+                  
+                  <!-- Customization Options -->
+                  <div class="customize-panel" style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
+                    <div class="customize-option">
+                      <label>题目数量：</label>
+                      <div class="option-group">
+                        <button class="option-btn" data-blank-count="5">5题</button>
+                        <button class="option-btn active" data-blank-count="10">10题</button>
+                        <button class="option-btn" data-blank-count="15">15题</button>
+                      </div>
+                    </div>
+                    <div class="customize-option">
+                      <label>难度等级：</label>
+                      <div class="option-group">
+                        <button class="option-btn" data-difficulty="easy">简单</button>
+                        <button class="option-btn active" data-difficulty="medium">中等</button>
+                        <button class="option-btn" data-difficulty="hard">困难</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Fill in the Blank Display -->
+                  <div class="generated-content" id="fill-blank-result" style="display: none;">
+                    <div class="loading-spinner" id="fill-blank-loading" style="display: none;">
+                      <div class="spinner"></div>
+                      <p>正在生成填空题...</p>
+                    </div>
+                    <div class="fill-blank-container" id="fill-blank-container"></div>
+                    <div class="result-actions">
+                      <button class="action-btn" id="print-fill-blank">打印</button>
+                      <button class="action-btn" id="favorite-fill-blank">收藏</button>
+                      <button class="action-btn" id="show-answers">显示答案</button>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <!-- Right column: Comment Section -->
@@ -522,7 +568,7 @@
                     </div>
                     <div class="ai-summary" id="ai-summary">
                       <div class="summary-label">AI总结</div>
-                      <div class="summary-text" id="summary-text">点击播放按钮开始收听博客内容...</div>
+                      <div class="summary-text" id="summary-text">点击播放按钮开始收听播客Podcast内容...</div>
                     </div>
                   </div>
                   
@@ -564,7 +610,7 @@
               <h3 class="plan-name">Free 版本</h3>
               <div class="plan-price">免费</div>
               <ul class="plan-features">
-                <li>全部博客资源免费听</li>
+                <li>全部播客Podcast资源免费听</li>
                 <li>每日 2 次 练习纸下载</li>
                 <li>超出次数需升级会员</li>
               </ul>
@@ -580,7 +626,7 @@
               <h3 class="plan-name">月卡</h3>
               <div class="plan-price">¥19.9<span class="price-period"> / 月</span></div>
               <ul class="plan-features">
-                <li>全部博客资源无限阅读</li>
+                <li>全部播客Podcast资源无限阅读</li>
                 <li>练习纸 无限次下载</li>
                 <li>新练习纸内容即时使用</li>
                 <li>无下载次数限制</li>
@@ -598,7 +644,7 @@
               <h3 class="plan-name">年卡</h3>
               <div class="plan-price">¥129<span class="price-period"> / 年</span></div>
               <ul class="plan-features">
-                <li>全部博客资源无限阅读</li>
+                <li>全部播客Podcast资源无限阅读</li>
                 <li>练习纸 无限次下载</li>
                 <li>新内容优先解锁</li>
                 <li>后续新增权益自动享受</li>
@@ -613,5 +659,7 @@
     <script src="tongyi-api.js"></script>
     <script src="gemini-api.js"></script>
     <script src="app.js"></script>
+    <script src="fill-blank.js"></script>
+    <script src="podcast-recommender.js"></script>
   </body>
 </html>

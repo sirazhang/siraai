@@ -36,6 +36,9 @@
 
   let currentTopic = "ielts";
   let isPlaying = false;
+  
+  // Expose currentTopic globally for podcast recommender
+  window.currentTopic = currentTopic;
 
   const topics = ["ielts", "christmas", "halloween", "gossip"];
   
@@ -141,12 +144,20 @@
       item.dataset.index = index;
       item.innerHTML = `
         <div class="favorite-checkbox">✓</div>
+        <button class="delete-favorite-btn" data-index="${index}" title="删除">×</button>
         <img src="${fav.imageSrc}" alt="Flashcard" />
         <div class="favorite-meta">
           <div>${fav.topic}</div>
           <div>${new Date(fav.timestamp).toLocaleDateString('zh-CN')}</div>
         </div>
       `;
+      
+      // Delete button click handler
+      const deleteBtn = item.querySelector('.delete-favorite-btn');
+      deleteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        deleteFavorite(index);
+      });
       
       // Toggle selection
       item.addEventListener('click', (e) => {
@@ -162,6 +173,19 @@
       
       favoritesGrid.appendChild(item);
     });
+  }
+
+  function deleteFavorite(index) {
+    if (!confirm('确定要删除这个收藏吗？')) {
+      return;
+    }
+    
+    const favorites = window.GeminiAPI.getFavoriteFlashcards();
+    favorites.splice(index, 1);
+    localStorage.setItem('flashcardFavorites', JSON.stringify(favorites));
+    
+    // Reload favorites display
+    loadFavorites();
   }
 
   // Nickname editing functions
@@ -603,6 +627,7 @@
 
   function loadTopic(topicKey) {
     currentTopic = topicKey;
+    window.currentTopic = topicKey; // Update global reference for recommender
     const data = topicData[topicKey];
     
     // Update image
@@ -761,7 +786,7 @@
   async function generateFlashcard(isCustom = false) {
     const blogTextEl = document.getElementById('blog-text');
     if (!blogTextEl || !blogTextEl.textContent || blogTextEl.textContent.includes('点击播放按钮')) {
-      alert('请先选择一个博客主题并加载内容！');
+      alert('请先选择一个播客Podcast主题并加载内容！');
       return;
     }
 
@@ -1523,7 +1548,7 @@
     
     if (!blogTextEl || !blogTextEl.textContent || blogTextEl.textContent.includes('点击播放按钮')) {
       if (summaryText) {
-        summaryText.textContent = '点击播放按钮开始收听博客内容...';
+        summaryText.textContent = '点击播放按钮开始收听播客Podcast内容...';
       }
       return;
     }
@@ -2077,6 +2102,48 @@
         selectPlan(plan);
       });
     });
+    
+    // Fill in the Blank: Generate
+    const generateFillBlankBtn = document.getElementById('generate-fill-blank');
+    if (generateFillBlankBtn) {
+      generateFillBlankBtn.addEventListener('click', generateFillBlank);
+    }
+    
+    // Fill in the Blank: Question count buttons
+    const blankCountBtns = document.querySelectorAll('[data-blank-count]');
+    blankCountBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        blankCountBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+    
+    // Fill in the Blank: Difficulty buttons
+    const difficultyBtns = document.querySelectorAll('[data-difficulty]');
+    difficultyBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        difficultyBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+    
+    // Fill in the Blank: Print
+    const printFillBlankBtn = document.getElementById('print-fill-blank');
+    if (printFillBlankBtn) {
+      printFillBlankBtn.addEventListener('click', printFillBlank);
+    }
+    
+    // Fill in the Blank: Favorite
+    const favoriteFillBlankBtn = document.getElementById('favorite-fill-blank');
+    if (favoriteFillBlankBtn) {
+      favoriteFillBlankBtn.addEventListener('click', favoriteFillBlank);
+    }
+    
+    // Fill in the Blank: Show Answers
+    const showAnswersBtn = document.getElementById('show-answers');
+    if (showAnswersBtn) {
+      showAnswersBtn.addEventListener('click', toggleAnswers);
+    }
     
     // Initialize download quota
     initializeDownloadQuota();

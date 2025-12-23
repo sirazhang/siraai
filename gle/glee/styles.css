@@ -785,10 +785,47 @@ body {
   overflow: hidden;
   transition: transform 0.2s ease;
   cursor: pointer;
+  position: relative;
 }
 
 .favorite-item:hover {
   transform: translateY(-2px);
+}
+
+.delete-favorite-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(239, 137, 132, 0.9);
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.2s ease;
+  z-index: 10;
+  line-height: 1;
+  padding: 0;
+}
+
+.favorite-item:hover .delete-favorite-btn {
+  opacity: 1;
+}
+
+.delete-favorite-btn:hover {
+  background: #d32f2f;
+  transform: scale(1.1);
+}
+
+.delete-favorite-btn:active {
+  transform: scale(0.95);
 }
 
 .favorite-item img {
@@ -1886,4 +1923,292 @@ body {
   .pricing-title {
     font-size: 24px;
   }
+}
+
+/* ========== Fill in the Blank Exercises ========== */
+.fill-blank-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-md);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.blank-question {
+  background: rgba(239, 137, 132, 0.1);
+  border: 1px solid rgba(239, 137, 132, 0.3);
+  border-radius: 8px;
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+
+.blank-question:hover {
+  background: rgba(239, 137, 132, 0.15);
+  border-color: rgba(239, 137, 132, 0.5);
+}
+
+.blank-question-number {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.blank-sentence {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.blank-input {
+  display: inline-block;
+  min-width: 80px;
+  padding: 2px 8px;
+  border: none;
+  border-bottom: 2px solid var(--accent);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  font-size: 15px;
+  font-weight: 600;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.blank-input:focus {
+  background: rgba(255, 255, 255, 0.2);
+  border-bottom-color: #4CAF50;
+}
+
+.blank-input.correct {
+  background: rgba(76, 175, 80, 0.2);
+  border-bottom-color: #4CAF50;
+  color: #4CAF50;
+}
+
+.blank-input.incorrect {
+  background: rgba(244, 67, 54, 0.2);
+  border-bottom-color: #f44336;
+  color: #f44336;
+}
+
+.blank-answer {
+  font-size: 13px;
+  color: #4CAF50;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(76, 175, 80, 0.1);
+  border-radius: 6px;
+  display: none;
+}
+
+.blank-answer.show {
+  display: block;
+}
+
+.blank-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 6px;
+}
+
+/* ========== Podcast Recommendation Modal ========== */
+.recommendation-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.recommendation-modal.show {
+  opacity: 1;
+}
+
+.recommendation-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(4px);
+}
+
+.recommendation-content {
+  position: relative;
+  background: linear-gradient(135deg, #1e1211, #2a1410);
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 800px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  border: 2px solid var(--cartier-red);
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+.recommendation-modal.show .recommendation-content {
+  transform: translateY(0);
+}
+
+.close-recommendation-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-recommendation-btn:hover {
+  background: var(--cartier-red);
+  transform: rotate(90deg);
+}
+
+.recommendation-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--cream-white);
+  margin: 0 0 8px;
+  text-align: center;
+}
+
+.recommendation-subtitle {
+  font-size: 14px;
+  color: var(--light-red-gray);
+  text-align: center;
+  margin: 0 0 24px;
+}
+
+.recommendation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.recommendation-item {
+  display: flex;
+  gap: 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(239, 137, 132, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+
+.recommendation-item:hover {
+  background: rgba(0, 0, 0, 0.4);
+  border-color: var(--accent);
+  transform: translateX(4px);
+}
+
+.recommendation-cover {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.recommendation-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recommendation-podcast-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--cream-white);
+  margin: 0;
+}
+
+.recommendation-description {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.recommendation-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--light-red-gray);
+}
+
+.recommendation-duration,
+.recommendation-difficulty {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.recommendation-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.recommendation-tags .tag {
+  padding: 4px 10px;
+  background: rgba(239, 137, 132, 0.15);
+  border: 1px solid rgba(239, 137, 132, 0.3);
+  border-radius: 12px;
+  font-size: 11px;
+  color: var(--accent);
+  text-transform: lowercase;
+}
+
+.recommendation-play-btn {
+  align-self: center;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(135deg, var(--cartier-red), var(--cartier-red-dark));
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(164, 36, 35, 0.4);
+}
+
+.recommendation-play-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(164, 36, 35, 0.6);
+}
+
+.recommendation-play-btn:active {
+  transform: translateY(0);
 }

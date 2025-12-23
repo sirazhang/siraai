@@ -500,12 +500,269 @@ Requirements:
   }
 }
 
+/**
+ * Generate task cards Q&A pairs using Gemini 3 Pro
+ * Creates 12 question-answer pairs for children (CEFR A1)
+ */
+async function generateTaskCards(blogText) {
+  const prompt = `You are a question creator.
+Based only on the provided material, generate 12 question–answer pairs.
+
+Rules:
+- Questions and answers must come strictly from the material. Do not add or infer information.
+- Target learners are children aged 1–5.
+- English level must be CEFR A1.
+
+Question Requirements:
+- Must be a question sentence
+- No more than 10 English words
+- At least 80% must start with WH-words (what, who, where, when, why)
+
+Answer Requirements:
+- Must come directly from the material
+- Must be a statement
+- No more than 10 English words
+
+Content Focus:
+- Main ideas
+- Key or new words
+
+Output Format (Required):
+For each pair, use exactly this format:
+Q：Question (English)
+问题：Question (Chinese)
+A：Answer (English)
+答案：Answer (Chinese)
+
+Material:
+${blogText}`;
+
+  try {
+    console.log('Generating task cards with Gemini 3 Pro...');
+    
+    const response = await fetch(GEMINI_TEXT_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': GEMINI_API_KEY
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: prompt
+          }]
+        }],
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 3000,
+        }
+      })
+    });
+
+    console.log('Task cards response status:', response.status);
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('API Error Details:', errorData);
+      throw new Error(`Gemini API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    // Extract text from response
+    let responseText = null;
+    if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
+      responseText = data.candidates[0].content.parts[0].text;
+    } else if (data.candidates?.[0]?.thought) {
+      responseText = data.candidates[0].thought;
+    }
+    
+    if (!responseText) {
+      console.error('Full API response:', JSON.stringify(data, null, 2));
+      throw new Error('Invalid response format: no text content found');
+    }
+    
+    console.log('Task cards generated:', responseText);
+    return responseText;
+  } catch (error) {
+    console.error('Error generating task cards:', error);
+    throw error;
+  }
+}
+
+/**
+ * Generate Bingo keywords using Gemini 3 Pro
+ */
+async function generateBingoKeywords(blogText, count = 9) {
+  const prompt = `Analyze the full set of provided text excerpts and generate a list of EXACTLY ${count} English keywords or short phrases that represent the core elements of the story.
+
+Include character names, key actions, emotions, settings, symbolic items, and pivotal moments. Ensure the list reflects both literal content (e.g., objects, actions) and abstract concepts (e.g., courage, identity).
+
+Choose terms that would be useful for vocabulary learning, thematic analysis, or content indexing.
+
+Output ONLY the ${count} keywords in lowercase, separated by commas, with no additional text.
+
+Text:
+${blogText}`;
+
+  try {
+    console.log(`Generating ${count} Bingo keywords with Gemini 3 Pro...`);
+    
+    const response = await fetch(GEMINI_TEXT_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': GEMINI_API_KEY
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: prompt
+          }]
+        }],
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 1000,
+        }
+      })
+    });
+
+    console.log('Bingo keywords response status:', response.status);
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('API Error Details:', errorData);
+      throw new Error(`Gemini API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    // Extract text from response
+    let responseText = null;
+    if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
+      responseText = data.candidates[0].content.parts[0].text;
+    } else if (data.candidates?.[0]?.thought) {
+      responseText = data.candidates[0].thought;
+    }
+    
+    if (!responseText) {
+      console.error('Full API response:', JSON.stringify(data, null, 2));
+      throw new Error('Invalid response format: no text content found');
+    }
+    
+    console.log('Bingo keywords generated:', responseText);
+    return responseText;
+  } catch (error) {
+    console.error('Error generating Bingo keywords:', error);
+    throw error;
+  }
+}
+
+/**
+ * Generate Bingo card images using Gemini 2.5 Flash Image
+ */
+async function generateBingoImages(keywords) {
+  const prompt = `You are creating TWO separate Bingo game cards based on the following keywords:
+
+${keywords}
+
+This task has STRICT layout and matching rules.
+
+--------------------------------
+BINGO CARD STRUCTURE (FOR BOTH SETS):
+- Create EXACTLY a 3 × 3 grid
+- EXACTLY 9 squares
+- 3 squares per row and column
+- All squares equal size
+- Title at top center: BINGO
+- The CENTER square (row 2, column 2) MUST say: FREE
+
+--------------------------------
+SET 1 — IMAGE BINGO:
+- Use EXACTLY 8 keywords from the list above
+- Place the 8 keywords into the 8 non-center squares as illustrations
+- Each non-center square contains ONLY ONE illustration
+- Illustrations represent the meaning of the word
+- NO words, NO letters, NO labels in any square
+
+VISUAL STYLE (IMAGES):
+- Miyazaki's water painting illustration style
+- Storybook look with soft outlines and bold, simple shapes
+- Warm, friendly colors
+- Clear silhouettes, easy for children to recognize
+
+--------------------------------
+SET 2 — VOCABULARY BINGO:
+- Use the SAME 8 words from Set 1
+- Each non-center square contains ONLY ONE English word or short phrase
+- NO images, NO icons, NO decorations
+- Large, clear, readable font
+
+--------------------------------
+QUALITY:
+- High resolution
+- Suitable for classroom screen display and A4 printing
+
+STRICT LIMITATIONS:
+- Do NOT mix images and words on the same card
+- Do NOT add extra text or explanations
+- Do NOT change grid size
+- Do NOT merge or split squares
+- Do NOT add decorations outside the grid`;
+
+  try {
+    console.log('Generating Bingo card images with Gemini 2.5 Flash Image...');
+    
+    const response = await fetch(GEMINI_IMAGE_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': GEMINI_API_KEY
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: prompt
+          }]
+        }],
+        generationConfig: {
+          temperature: 0.4,
+          maxOutputTokens: 1000,
+        }
+      })
+    });
+
+    console.log('Bingo images response status:', response.status);
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('API Error Details:', errorData);
+      throw new Error(`Image generation API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Bingo images response:', data);
+    
+    // Try to extract image data from response
+    // Note: Gemini 2.5 Flash Image may return images in different formats
+    // This is a placeholder - actual implementation depends on API response format
+    return null; // Will use fallback
+    
+  } catch (error) {
+    console.error('Error generating Bingo images:', error);
+    throw error;
+  }
+}
+
 // Export functions for use in main app
 window.GeminiAPI = {
   extractVocabularyMindMap,
   generateFlashcardImage,
   generateMindMapText,
   generateMindMapImage,
+  generateTaskCards,
+  generateBingoKeywords,
+  generateBingoImages,
   saveFlashcardToFavorites,
   getFavoriteFlashcards,
   printFlashcard,
