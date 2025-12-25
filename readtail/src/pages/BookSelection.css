@@ -1,0 +1,224 @@
+.book-selection {
+  width: 100%;
+  min-height: 100vh;
+  padding: 40px 60px 120px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 用户信息调整 */
+.user-info-adjusted {
+  top: 20px !important;
+  left: 40px !important;
+}
+
+/* 导航标签 */
+.nav-tabs {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  z-index: 100;
+}
+
+.tab {
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: transparent;
+  color: #8B9A8D;
+  border: 2px solid transparent;
+}
+
+.tab.active {
+  background: #D4EDD7;
+  color: #4A7C59;
+  font-weight: bold;
+  animation: bounce 0.5s ease;
+}
+
+.tab:hover:not(.active) {
+  background: rgba(212, 237, 215, 0.3);
+}
+
+/* 书籍展示区 */
+.books-carousel {
+  width: 100%;
+  height: calc(100vh - 200px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 80px;
+  position: relative;
+}
+
+/* 横向轮播容器 - 简单水平滑动 */
+.horizontal-carousel {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+}
+
+.horizontal-carousel:active {
+  cursor: grabbing;
+}
+
+.books-slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 书籍卡片 - 水平排列 */
+.book-slide {
+  position: absolute;
+  width: 320px;
+  height: 440px;
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+}
+
+.book-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.book-slide:hover img {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.book-slide.selected {
+  cursor: default;
+}
+
+.book-slide.selected img {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+/* 开始阅读按钮 - 横向小字体，处于封面底部 */
+.start-reading-overlay {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 40px;
+  background: linear-gradient(135deg, #66BB6A 0%, #81C784 100%);
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(102, 187, 106, 0.4);
+  transition: all 0.3s ease;
+  z-index: 100;
+  animation: fadeInUp 0.3s ease;
+  white-space: nowrap;
+}
+
+.start-reading-overlay:hover {
+  transform: translateX(-50%) scale(1.05);
+  box-shadow: 0 6px 16px rgba(102, 187, 106, 0.5);
+}
+
+.start-reading-overlay:active {
+  transform: translateX(-50%) scale(0.98);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    bottom: 10px;
+  }
+  to {
+    opacity: 1;
+    bottom: 20px;
+  }
+}
+
+/* 宠物 - 右侧 */
+.pet-hello-container {
+  position: absolute;
+  right: 10%;
+  top: 30%;
+  width: 280px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 15;
+}
+
+.pet-hello {
+  width: 100%;
+  height: auto;
+  animation: bounce 2s ease-in-out infinite;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.pet-hello:hover {
+  transform: scale(1.1);
+}
+
+/* 宠物对话框 */
+.pet-dialogue-bubble {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 360px;
+  animation: dialogueFadeIn 0.3s ease;
+}
+
+@keyframes dialogueFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.dialogue-bubble-bg {
+  width: 100%;
+  height: auto;
+}
+
+.dialogue-bubble-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 22px;
+  font-weight: bold;
+  color: #5D4B6B;
+  text-align: center;
+  padding: 0 20px;
+  line-height: 1.4;
+}
+
+

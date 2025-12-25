@@ -1,0 +1,148 @@
+.pet-unlock {
+  width: 100%;
+  min-height: 100vh;
+  padding: 40px 60px 120px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 宠物展示区 - 整体下移 */
+.pets-display {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 100px;
+  margin-top: 80px;
+}
+
+/* 侧边宠物 - 放大30% */
+.pet-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  opacity: 0.6;
+}
+
+.pet-image-container {
+  position: relative;
+  display: inline-block;
+}
+
+.pet-side.locked .pet-image-container img {
+  filter: grayscale(1) brightness(0.5);
+}
+
+.pet-side img {
+  width: 260px;
+  height: auto;
+  transition: all 0.3s ease;
+}
+
+/* 问号图案 */
+.question-mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 120px;
+  font-weight: bold;
+  color: rgba(107, 107, 107, 0.8);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', cursive;
+}
+
+/* 主角宠物 - 放大25% */
+.pet-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.pet-main img {
+  width: 440px;
+  height: auto;
+}
+
+/* 状态标签 - 统一样式 */
+.status-label {
+  background: transparent;
+  padding: 0;
+  font-size: 28px;
+  color: #6B6B6B;
+  text-align: center;
+  font-weight: 500;
+}
+
+.status-label.unlocked {
+  background: transparent;
+  color: #6B6B6B;
+  font-size: 28px;
+  box-shadow: none;
+  font-weight: 500;
+}
+
+/* 对话气泡 - 随宠物下移并保持相对间距 */
+.dialogue-bubble {
+  position: absolute;
+  top: -220px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 420px;
+  z-index: 10;
+}
+
+.dialogue-bg {
+  width: 100%;
+  height: auto;
+}
+
+.dialogue-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 80%;
+}
+
+.dialogue-content p {
+  font-size: 28px;
+  color: #5D4B6B;
+  line-height: 1.6;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* 继续按钮 - 保持合适间距 */
+.continue-btn {
+  position: absolute;
+  bottom: 160px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 20px 90px;
+  background: linear-gradient(135deg, #66BB6A 0%, #81C784 100%);
+  color: white;
+  font-size: 26px;
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(102, 187, 106, 0.4);
+  transition: all 0.3s ease;
+}
+
+.continue-btn:hover {
+  transform: translateX(-50%) translateY(-3px);
+  box-shadow: 0 12px 28px rgba(102, 187, 106, 0.5);
+}
+
+.continue-btn:active {
+  transform: translateX(-50%) scale(0.98);
+}

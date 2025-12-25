@@ -1,0 +1,200 @@
+.quiz-report {
+  width: 100%;
+  min-height: 100vh;
+  padding: 40px 60px 120px;
+  position: relative;
+  display: flex;
+  background: #F1F0E3;
+}
+
+/* 左侧宠物区域 */
+.pet-congratulation {
+  position: fixed;
+  left: 80px;
+  bottom: 180px;
+  z-index: 10;
+}
+
+.pet-image {
+  width: 280px;
+  height: auto;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.pet-dialogue-container {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 350px;
+}
+
+.dialogue-bg {
+  width: 100%;
+  height: auto;
+}
+
+.dialogue-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+  font-weight: bold;
+  color: #5D4B6B;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* 右侧核心数据展示区 */
+.stats-container {
+  flex: 1;
+  margin-left: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 60px;
+}
+
+/* 进度环 - 横向排列3个 */
+.progress-rings {
+  display: flex;
+  gap: 60px;
+  margin-bottom: 40px;
+  justify-content: center;
+}
+
+.ring-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.circular-progress {
+  position: relative;
+  width: 180px;
+  height: 180px;
+}
+
+.circular-progress circle {
+  transition: stroke-dashoffset 1.5s ease-in-out;
+}
+
+.progress-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.stat-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #3E2723;
+}
+
+.stat-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+.stat-goal {
+  font-size: 16px;
+  color: #666;
+  text-align: center;
+}
+
+/* 互动翻转卡片 */
+.flip-card-wrapper {
+  width: 100%;
+  max-width: 700px;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.flip-card {
+  width: 100%;
+  height: 200px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  background: #E4DEC7;
+  border-radius: 20px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #3E2723;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.card-content {
+  font-size: 18px;
+  line-height: 1.8;
+  color: #333;
+  text-align: center;
+  margin: 0;
+}
+
+.flip-hint {
+  font-size: 14px;
+  color: #999;
+  text-align: center;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}

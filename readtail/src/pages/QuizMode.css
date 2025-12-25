@@ -1,0 +1,169 @@
+.quiz-mode {
+  width: 100%;
+  min-height: 100vh;
+  padding: 40px 60px 120px;
+  position: relative;
+}
+
+/* 进度条 - 放在用户信息右侧，适当缩短 */
+.quiz-progress-container {
+  position: absolute;
+  top: 50px;
+  left: 280px;
+  width: 500px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.progress-bar-quiz {
+  flex: 1;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 14px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.progress-fill-quiz {
+  height: 100%;
+  background: linear-gradient(90deg, #6FA87D 0%, #8BC49F 100%);
+  border-radius: 14px;
+  transition: width 0.6s ease-out;
+}
+
+.progress-fill-quiz.correct-flash {
+  animation: greenFlash 0.6s ease;
+}
+
+@keyframes greenFlash {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.3);
+  }
+}
+
+.progress-count {
+  font-size: 32px;
+  font-weight: bold;
+  color: #4A3F35;
+}
+
+/* 题目区域 - 水平居中，宽度为页面2/3，整体上移 */
+.question-area {
+  margin: 180px auto 0;
+  padding: 0;
+  width: 66.67%;
+  max-width: 900px;
+}
+
+/* 问题标题 - 26px字体，居中 */
+.question-title {
+  font-family: 'Source Han Sans CN', 'PingFang SC', sans-serif;
+  font-size: 26px;
+  font-weight: bold;
+  color: #4A3F35;
+  line-height: 1.6;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+/* 选项网格 - 缩短卡片高度 */
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px 32px;
+}
+
+/* 选项卡片 - 缩短高度，放大字体 */
+.option-card {
+  min-height: 80px;
+  background: rgba(230, 225, 215, 0.6);
+  border-radius: 20px;
+  padding: 24px 32px;
+  font-size: 26px;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.option-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  background: rgba(230, 225, 215, 0.8);
+}
+
+.option-card.correct {
+  background: linear-gradient(135deg, #6FA87D 0%, #8BC49F 100%);
+  color: white;
+  font-weight: bold;
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(111, 168, 125, 0.4);
+  animation: bounce 0.5s ease;
+}
+
+.option-card.wrong {
+  background: rgba(255, 82, 82, 0.2);
+  border-color: #FF5252;
+}
+
+/* 宠物 - 向左平移 */
+.quiz-pet {
+  position: fixed;
+  bottom: 150px;
+  left: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.quiz-pet img {
+  width: 200px;
+  height: auto;
+}
+
+.quiz-pet img.jump {
+  animation: jumpUp 0.6s ease;
+}
+
+@keyframes jumpUp {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-30px);
+  }
+}
+
+/* 宠物对话框 - 在宠物上方 */
+.pet-message-bubble {
+  position: absolute;
+  bottom: 220px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+}
+
+.bubble-bg {
+  width: 100%;
+  height: auto;
+}
+
+.bubble-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+  color: #5D4B6B;
+  text-align: center;
+  width: 80%;
+}

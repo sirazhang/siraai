@@ -1,0 +1,105 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: #F1F0E3;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* 全局动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes scale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+}
+
+/* 全局用户信息样式 - 缩小并放在左上角 */
+.user-info {
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 100;
+  animation: fadeIn 0.6s ease;
+}
+
+.user-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-greeting {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.greeting-text {
+  font-size: 20px;
+  color: #8B7355;
+}
+
+.user-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #5D4037;
+}
+
+/* 全局搜索图标样式 */
+.search-icon {
+  position: absolute;
+  top: 50px;
+  right: 60px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 100;
+}
+
+.search-icon img {
+  width: 32px;
+  height: 32px;
+  filter: grayscale(1);
+  opacity: 0.7;
+}
+
+.search-icon:hover img {
+  opacity: 1;
+  transform: scale(1.1);
+}
